@@ -1,0 +1,6 @@
+indexes:
+
+- kind: ThrowUp
+  properties:
+  - name: __key__
+    direction: desc
