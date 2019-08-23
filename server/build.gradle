@@ -22,7 +22,7 @@ dependencies {
 appengine {
     deploy {
         projectId = 'oreo-tracker'
-        version = 'alpha'
+        version = 'GCLOUD_CONFIG'
     }
 }
 

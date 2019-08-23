@@ -1,10 +1,7 @@
 package com.joshafeinberg.oreotracker.network
 
 import com.google.gson.GsonBuilder
-import com.joshafeinberg.oreotracker.sharedmodule.Content
-import com.joshafeinberg.oreotracker.sharedmodule.Stats
-import com.joshafeinberg.oreotracker.sharedmodule.ThrowUp
-import com.joshafeinberg.oreotracker.sharedmodule.Time
+import com.joshafeinberg.oreotracker.sharedmodule.*
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -43,12 +40,12 @@ object NetworkModule {
 }
 
 interface OreoTrackerNetwork {
-    @GET("throwup")
+    @GET(SICKNESS_GET)
     suspend fun getThrowUps(): List<ThrowUp>
 
-    @POST("throwup")
+    @POST(SICKNESS_POST)
     suspend fun postThrowUp(@Body body: ThrowUp)
 
-    @GET("stats")
+    @GET(STATS_GET)
     suspend fun getStats(): Stats
 }
