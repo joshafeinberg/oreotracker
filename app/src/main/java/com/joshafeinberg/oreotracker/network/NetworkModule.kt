@@ -48,4 +48,10 @@ interface OreoTrackerNetwork {
 
     @GET(STATS_GET)
     suspend fun getStats(): Stats
+
+    @GET(WEIGHT_GET)
+    suspend fun getWeights(): List<Weight>
+
+    @POST(WEIGHT_POST)
+    suspend fun postWeight(@Body body: Weight)
 }

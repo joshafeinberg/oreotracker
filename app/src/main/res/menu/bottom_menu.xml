@@ -11,4 +11,9 @@
         android:title="@string/statistics"
         android:icon="@drawable/ic_equalizer_black_24dp" />
 
+    <item
+        android:id="@+id/action_weight"
+        android:title="@string/weight"
+        android:icon="@drawable/ic_pets_black_24dp" />
+
 </menu>

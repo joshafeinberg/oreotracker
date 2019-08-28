@@ -11,4 +11,9 @@
     <string name="save">Save</string>
     <string name="last_30_days">Last 30 Days (%d)</string>
     <string name="last_7_days">Last 7 Days (%d)</string>
+    <string name="weight">Weight</string>
+    <string name="weight_add">Add Weight</string>
+    <string name="weight_add_me">My Weight</string>
+    <string name="weight_add_ours">Our Weight</string>
+    <string name="weight_total">Current Weight: %.1f</string>
 </resources>

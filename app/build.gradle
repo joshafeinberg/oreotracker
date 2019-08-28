@@ -24,6 +24,15 @@ android {
     packagingOptions {
         exclude 'META-INF/*'
     }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -37,6 +46,10 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:1.0.0-alpha02"
     implementation 'com.squareup.okhttp3:logging-interceptor:3.8.0'
 
+    implementation "androidx.activity:activity:${versions.activityx}"
+    implementation "androidx.activity:activity-ktx:${versions.activityx}"
+    implementation "androidx.fragment:fragment:${versions.fragmentx}"
+    implementation "androidx.fragment:fragment-ktx:${versions.fragmentx}"
 
     implementation 'com.google.android.material:material:1.1.0-alpha06'
     implementation deps.retrofit.client

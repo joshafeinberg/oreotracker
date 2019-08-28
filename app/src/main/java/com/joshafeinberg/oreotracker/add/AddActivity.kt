@@ -11,8 +11,8 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.textfield.TextInputLayout
 import com.joshafeinberg.oreotracker.R
 import com.joshafeinberg.oreotracker.arch.util.observe
@@ -21,12 +21,12 @@ import com.joshafeinberg.oreotracker.sharedmodule.Time
 import com.joshafeinberg.oreotracker.util.DateUtil
 import com.joshafeinberg.oreotracker.util.readableName
 import com.joshafeinberg.oreotracker.util.toFormattedDate
-import java.util.Calendar
+import java.util.*
 
 
 class AddActivity : AppCompatActivity() {
 
-    private lateinit var addViewModel: AddViewModel
+    private val addViewModel: AddViewModel by viewModels()
     private lateinit var textLayoutDate: TextInputLayout
     private lateinit var textLayoutTime: TextInputLayout
     private lateinit var textLayoutExactTime: TextInputLayout
@@ -36,8 +36,6 @@ class AddActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add)
-
-        addViewModel = ViewModelProviders.of(this).get(AddViewModel::class.java)
 
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

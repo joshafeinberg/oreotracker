@@ -4,4 +4,7 @@
     <datastore-index kind="ThrowUp" ancestor="false" source="manual">
         <property name="date" direction="desc" />
     </datastore-index>
+    <datastore-index kind="Weight" ancestor="false" source="manual">
+        <property name="date" direction="desc" />
+    </datastore-index>
 </datastore-indexes>

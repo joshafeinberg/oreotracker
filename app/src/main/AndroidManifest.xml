@@ -24,6 +24,9 @@
         <activity
             android:name=".add.AddActivity"
             android:label="@string/add_title"/>
+        <activity
+            android:name=".weight.add.AddWeightActivity"
+            android:label="@string/weight_add" />
     </application>
 
 </manifest>

@@ -5,7 +5,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.core.widget.ContentLoadingProgressBar
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.activityViewModels
 import com.joshafeinberg.oreotracker.R
 import com.joshafeinberg.oreotracker.arch.util.observe
 import com.joshafeinberg.oreotracker.sharedmodule.Content
@@ -15,7 +15,7 @@ import com.joshafeinberg.oreotracker.util.readableName
 
 class StatsFragment : Fragment(R.layout.fragment_stats) {
 
-    private lateinit var statsViewModel: StatsViewModel
+    private val statsViewModel: StatsViewModel by activityViewModels()
     private lateinit var textThirtyDayHeader: TextView
     private lateinit var textThirtyDayContent: TextView
     private lateinit var textThirtyDayTime: TextView
@@ -25,10 +25,6 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        statsViewModel = activity?.run {
-            ViewModelProviders.of(this).get(StatsViewModel::class.java)
-        } ?: throw Exception("Invalid Activity")
 
         val loadingView = view.findViewById<ContentLoadingProgressBar>(R.id.loading)
         textThirtyDayHeader = view.findViewById(R.id.text_30_day_header)
@@ -77,7 +73,7 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
         for (time in times) {
             val tempTime = time.simpleName.toLowerCase()
             val thirtyDayCount = stats.lastThirtyDayTimeCount[tempTime] ?: 0
-            val sevenDayCount = stats.lastThirtyDayTimeCount[tempTime] ?: 0
+            val sevenDayCount = stats.lastSevenDayTimeCount[tempTime] ?: 0
 
             thirtyDayTimesString += "${time.readableName}: $thirtyDayCount\n"
             sevenDayTimesString += "${time.readableName}: $sevenDayCount\n"

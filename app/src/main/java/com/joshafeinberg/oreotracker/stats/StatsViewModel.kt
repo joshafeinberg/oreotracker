@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 
 class StatsViewModel(savedStateHandle: SavedStateHandle) : ViewStateManager.ViewStateViewModel<StatsViewModel.StatsState, StatsViewModel.StatsEvents>(savedStateHandle) {
 
-    override val initialState: StatsViewModel.StatsState = StatsState()
+    override val initialState: StatsState = StatsState()
 
     fun downloadStats() {
         viewModelScope.launch {

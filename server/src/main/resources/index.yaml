@@ -1,0 +1,12 @@
+indexes:
+  - kind: ThrowUp
+    ancestor: no
+    properties:
+      - name: __key__
+        direction:
+
+  - kind: Weight
+    ancestor: no
+    properties:
+      - name: __key__
+        direction: desc

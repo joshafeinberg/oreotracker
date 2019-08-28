@@ -8,9 +8,12 @@ import com.joshafeinberg.oreotracker.server.stats.StatsController
 import com.joshafeinberg.oreotracker.server.stats.StatsRepository
 import com.joshafeinberg.oreotracker.server.tracker.OreoController
 import com.joshafeinberg.oreotracker.server.tracker.OreoRepository
+import com.joshafeinberg.oreotracker.server.weight.WeightController
+import com.joshafeinberg.oreotracker.server.weight.WeightRepository
 import com.joshafeinberg.oreotracker.sharedmodule.Content
 import com.joshafeinberg.oreotracker.sharedmodule.ThrowUp
 import com.joshafeinberg.oreotracker.sharedmodule.Time
+import com.joshafeinberg.oreotracker.sharedmodule.Weight
 import io.ktor.application.Application
 import io.ktor.application.call
 import io.ktor.application.install
@@ -76,12 +79,15 @@ fun Application.main() {
         ObjectifyService.register(Time.AfterDinner::class.java)
         ObjectifyService.register(Time.ExactTime::class.java)
         ObjectifyService.register(Content::class.java)
+        ObjectifyService.register(Weight::class.java)
 
         bind<Objectify>() with provider { ObjectifyService.ofy() }
         bind<OreoRepository>() with singleton { OreoRepository(instance()) }
         bindSingleton { OreoController(it) }
         bind<StatsRepository>() with singleton { StatsRepository(instance()) }
         bindSingleton { StatsController(it) }
+        bind<WeightRepository>() with singleton { WeightRepository(instance()) }
+        bindSingleton { WeightController(it) }
     }
 }
 
