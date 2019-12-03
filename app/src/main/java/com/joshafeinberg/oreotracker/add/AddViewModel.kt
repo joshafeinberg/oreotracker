@@ -1,10 +1,11 @@
 package com.joshafeinberg.oreotracker.add
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.joshafeinberg.oreotracker.arch.SavedStateViewModel
 import com.joshafeinberg.oreotracker.arch.ViewEvents
 import com.joshafeinberg.oreotracker.arch.ViewState
-import com.joshafeinberg.oreotracker.arch.ViewStateManager
 import com.joshafeinberg.oreotracker.network.NetworkModule
 import com.joshafeinberg.oreotracker.sharedmodule.Content
 import com.joshafeinberg.oreotracker.sharedmodule.ThrowUp
@@ -13,7 +14,8 @@ import kotlinx.android.parcel.Parcelize
 import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
 
-class AddViewModel(savedState: SavedStateHandle) : ViewStateManager.ViewStateViewModel<AddViewModel.AddViewState, AddViewModel.AddViewEvents>(savedState) {
+class AddViewModel(override val savedState: SavedStateHandle) : ViewModel(),
+        SavedStateViewModel<AddViewModel.AddViewState, AddViewModel.AddViewEvents> {
     override val initialState = AddViewState()
 
     private var selectedDate: Long = System.currentTimeMillis()

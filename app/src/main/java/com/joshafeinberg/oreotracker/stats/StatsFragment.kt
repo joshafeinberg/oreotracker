@@ -7,6 +7,7 @@ import androidx.core.widget.ContentLoadingProgressBar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.joshafeinberg.oreotracker.R
+import com.joshafeinberg.oreotracker.arch.state
 import com.joshafeinberg.oreotracker.arch.util.observe
 import com.joshafeinberg.oreotracker.sharedmodule.Content
 import com.joshafeinberg.oreotracker.sharedmodule.Stats

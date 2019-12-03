@@ -1,16 +1,16 @@
 package com.joshafeinberg.oreotracker.home
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.joshafeinberg.oreotracker.arch.ViewEvents
+import com.joshafeinberg.oreotracker.arch.StateViewModel
 import com.joshafeinberg.oreotracker.arch.ViewState
-import com.joshafeinberg.oreotracker.arch.ViewStateManager
 import com.joshafeinberg.oreotracker.network.NetworkModule
 import com.joshafeinberg.oreotracker.sharedmodule.ThrowUp
 import kotlinx.android.parcel.Parcelize
 import kotlinx.coroutines.launch
 
-class HomeViewModel(savedState: SavedStateHandle) : ViewStateManager.ViewStateViewModel<HomeViewModel.HomeState, HomeViewModel.HomeEvents>(savedState) {
+class HomeViewModel(override val savedState: SavedStateHandle) : ViewModel(), StateViewModel<HomeViewModel.HomeState> {
 
     override val initialState: HomeState = HomeState()
 
@@ -31,5 +31,4 @@ class HomeViewModel(savedState: SavedStateHandle) : ViewStateManager.ViewStateVi
         fun addItem(item: ThrowUp): HomeState = copy(isLoading = false, items = items.toMutableList().apply { add(0, item) }.toList())
     }
 
-    sealed class HomeEvents : ViewEvents
 }

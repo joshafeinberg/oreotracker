@@ -1,16 +1,17 @@
 package com.joshafeinberg.oreotracker.weight
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.joshafeinberg.oreotracker.arch.SavedStateViewModel
 import com.joshafeinberg.oreotracker.arch.ViewEvents
 import com.joshafeinberg.oreotracker.arch.ViewState
-import com.joshafeinberg.oreotracker.arch.ViewStateManager
 import com.joshafeinberg.oreotracker.network.NetworkModule
 import com.joshafeinberg.oreotracker.sharedmodule.Weight
 import kotlinx.android.parcel.Parcelize
 import kotlinx.coroutines.launch
 
-class WeightViewModel(savedState: SavedStateHandle) : ViewStateManager.ViewStateViewModel<WeightViewModel.WeightState, WeightViewModel.WeightEvents>(savedState) {
+class WeightViewModel(override val savedState: SavedStateHandle) : ViewModel(), SavedStateViewModel<WeightViewModel.WeightState, WeightViewModel.WeightEvents> {
 
     override val initialState: WeightState = WeightState()
 

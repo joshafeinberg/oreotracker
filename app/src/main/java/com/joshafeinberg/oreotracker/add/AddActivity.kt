@@ -15,6 +15,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputLayout
 import com.joshafeinberg.oreotracker.R
+import com.joshafeinberg.oreotracker.arch.events
+import com.joshafeinberg.oreotracker.arch.state
 import com.joshafeinberg.oreotracker.arch.util.observe
 import com.joshafeinberg.oreotracker.sharedmodule.Content
 import com.joshafeinberg.oreotracker.sharedmodule.Time

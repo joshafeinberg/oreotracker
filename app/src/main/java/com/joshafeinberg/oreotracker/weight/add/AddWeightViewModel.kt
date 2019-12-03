@@ -1,17 +1,17 @@
 package com.joshafeinberg.oreotracker.weight.add
 
-import android.text.Editable
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.joshafeinberg.oreotracker.arch.SavedStateViewModel
 import com.joshafeinberg.oreotracker.arch.ViewEvents
 import com.joshafeinberg.oreotracker.arch.ViewState
-import com.joshafeinberg.oreotracker.arch.ViewStateManager
 import com.joshafeinberg.oreotracker.network.NetworkModule
 import com.joshafeinberg.oreotracker.sharedmodule.Weight
 import kotlinx.android.parcel.Parcelize
 import kotlinx.coroutines.launch
 
-class AddWeightViewModel(savedState: SavedStateHandle) : ViewStateManager.ViewStateViewModel<AddWeightViewModel.AddViewState, AddWeightViewModel.AddViewEvents>(savedState) {
+class AddWeightViewModel(override val savedState: SavedStateHandle) : ViewModel(), SavedStateViewModel<AddWeightViewModel.AddViewState, AddWeightViewModel.AddViewEvents> {
     override val initialState = AddViewState()
 
     private var selectedDate: Long = System.currentTimeMillis()

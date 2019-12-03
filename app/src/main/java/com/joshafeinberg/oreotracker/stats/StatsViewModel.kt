@@ -1,16 +1,18 @@
 package com.joshafeinberg.oreotracker.stats
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.joshafeinberg.oreotracker.arch.SavedStateViewModel
+import com.joshafeinberg.oreotracker.arch.StateViewModel
 import com.joshafeinberg.oreotracker.arch.ViewEvents
 import com.joshafeinberg.oreotracker.arch.ViewState
-import com.joshafeinberg.oreotracker.arch.ViewStateManager
 import com.joshafeinberg.oreotracker.network.NetworkModule
 import com.joshafeinberg.oreotracker.sharedmodule.Stats
 import kotlinx.android.parcel.Parcelize
 import kotlinx.coroutines.launch
 
-class StatsViewModel(savedStateHandle: SavedStateHandle) : ViewStateManager.ViewStateViewModel<StatsViewModel.StatsState, StatsViewModel.StatsEvents>(savedStateHandle) {
+class StatsViewModel(override val savedState: SavedStateHandle) : ViewModel(), StateViewModel<StatsViewModel.StatsState> {
 
     override val initialState: StatsState = StatsState()
 
@@ -26,5 +28,4 @@ class StatsViewModel(savedStateHandle: SavedStateHandle) : ViewStateManager.View
         fun setStats(items: Stats): StatsState = copy(isLoading = false, stats =  items)
     }
 
-    sealed class StatsEvents : ViewEvents
 }
