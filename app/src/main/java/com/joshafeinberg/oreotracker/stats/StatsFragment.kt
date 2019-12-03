@@ -46,8 +46,6 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
                 showStats(it)
             }
         }
-
-        statsViewModel.downloadStats()
     }
 
     private fun showStats(stats: Stats) {

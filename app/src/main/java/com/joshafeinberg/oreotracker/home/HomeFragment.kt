@@ -38,7 +38,5 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
             throwUpAdapter.items = state.items
         }
-
-        homeViewModel.downloadItems()
     }
 }

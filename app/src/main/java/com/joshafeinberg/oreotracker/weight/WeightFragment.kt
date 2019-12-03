@@ -38,8 +38,6 @@ class WeightFragment : Fragment(R.layout.fragment_weight) {
 
             weightAdapter.items = state.items
         }
-
-        weightViewModel.downloadItems()
     }
 
 }

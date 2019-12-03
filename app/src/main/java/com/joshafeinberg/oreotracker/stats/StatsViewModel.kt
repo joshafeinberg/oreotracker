@@ -16,7 +16,7 @@ class StatsViewModel(override val savedState: SavedStateHandle) : ViewModel(), S
 
     override val initialState: StatsState = StatsState()
 
-    fun downloadStats() {
+    init {
         viewModelScope.launch {
             val items = NetworkModule.adapter.getStats()
             updateState { setStats(items) }

@@ -15,7 +15,7 @@ class WeightViewModel(override val savedState: SavedStateHandle) : ViewModel(), 
 
     override val initialState: WeightState = WeightState()
 
-    fun downloadItems() {
+    init {
         viewModelScope.launch {
             val items = NetworkModule.adapter.getWeights()
             updateState { setItems(items) }

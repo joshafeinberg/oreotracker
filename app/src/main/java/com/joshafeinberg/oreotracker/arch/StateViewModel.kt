@@ -1,7 +1,6 @@
 package com.joshafeinberg.oreotracker.arch
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 
 interface StateViewModel<V : ViewState> {
@@ -9,20 +8,13 @@ interface StateViewModel<V : ViewState> {
     val initialState: V
 
     fun updateState(block: V.() -> V){
-        val newState = viewState.block()
+        val oldState = state.value!! // state has an initial value so this can literally never be null
+        val newState = oldState.block()
         savedState.set(STATE, newState)
-        _state.value = newState
     }
 }
 
-private val <V: ViewState> StateViewModel<V>.viewState: V
-    get() = _state.value ?: savedState.get(STATE) ?: initialState
-
-private val <V: ViewState> StateViewModel<V>._state: MutableLiveData<V> by lazy {
-    MutableLiveData<V>()
-}
-
 val <V : ViewState> StateViewModel<V>.state: LiveData<V>
-    get() = _state
+    get() = savedState.getLiveData(STATE, initialState)
 
 private const val STATE = "state"

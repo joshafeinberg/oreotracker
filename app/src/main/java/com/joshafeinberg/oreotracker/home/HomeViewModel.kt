@@ -14,7 +14,7 @@ class HomeViewModel(override val savedState: SavedStateHandle) : ViewModel(), St
 
     override val initialState: HomeState = HomeState()
 
-    fun downloadItems() {
+    init {
         viewModelScope.launch {
             val items = NetworkModule.adapter.getThrowUps()
             updateState { setItems(items) }
