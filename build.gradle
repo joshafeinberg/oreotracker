@@ -8,9 +8,9 @@ buildscript {
             'appengine_version': '1.9.74',
             'appengine_plugin_version': '2.0.1',
             'retrofit': '2.6.1',
-            'lifecycle_version': '2.2.0-alpha03',
-            'activityx': '1.1.0-alpha02',
-            'fragmentx': '1.2.0-alpha02'
+            'lifecycle_version': '2.2.0',
+            'activityx': '1.1.0',
+            'fragmentx': '1.2.2'
     ]
 
     ext.deps = [
@@ -37,7 +37,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.1'
+        classpath 'com.android.tools.build:gradle:3.6.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
         classpath "com.google.cloud.tools:appengine-gradle-plugin:${versions.appengine_plugin_version}"
 

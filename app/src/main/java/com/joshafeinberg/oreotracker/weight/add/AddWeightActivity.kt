@@ -14,33 +14,30 @@ import com.joshafeinberg.oreotracker.R
 import com.joshafeinberg.oreotracker.arch.events
 import com.joshafeinberg.oreotracker.arch.state
 import com.joshafeinberg.oreotracker.arch.util.observe
+import com.joshafeinberg.oreotracker.databinding.ActivityAddWeightBinding
 import com.joshafeinberg.oreotracker.util.DateUtil
 import com.joshafeinberg.oreotracker.util.toFormattedDate
+import com.joshafeinberg.oreotracker.util.viewBinding
 import java.util.Calendar
 
 class AddWeightActivity : AppCompatActivity(R.layout.activity_add_weight) {
 
     private val addWeightViewModel: AddWeightViewModel by viewModels()
-    private lateinit var textLayoutDate: TextInputLayout
-    private lateinit var textMyWeight: TextInputLayout
-    private lateinit var textOurWeight: TextInputLayout
+    private val binding by viewBinding(ActivityAddWeightBinding::inflate)
     private var progressDialog: ProgressDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(binding.root)
 
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        textLayoutDate = findViewById(R.id.textlayout_date)
         setupDatePicker()
-
-        textMyWeight = findViewById(R.id.textlayout_my_weight)
-        textOurWeight = findViewById(R.id.textlayout_our_weight)
 
         addWeightViewModel.state.observe(this) { state ->
             hideLoading()
-            textLayoutDate.editText?.setText(state.selectedDate.toFormattedDate(DateUtil.DATE_FORMAT))
+            binding.textlayoutDate.editText?.setText(state.selectedDate.toFormattedDate(DateUtil.DATE_FORMAT))
         }
 
         addWeightViewModel.events.observe(this) { event ->
@@ -69,7 +66,10 @@ class AddWeightActivity : AppCompatActivity(R.layout.activity_add_weight) {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return if (item?.itemId == R.id.action_save) {
-            addWeightViewModel.onSaveClicked(textMyWeight.editText?.text?.toString(), textOurWeight.editText?.text?.toString())
+            addWeightViewModel.onSaveClicked(
+                    binding.textlayoutMyWeight.editText?.text?.toString(),
+                    binding.textlayoutOurWeight.editText?.text?.toString()
+            )
             true
         } else {
             false
@@ -77,14 +77,16 @@ class AddWeightActivity : AppCompatActivity(R.layout.activity_add_weight) {
     }
 
     private fun setupDatePicker() {
-        textLayoutDate.editText?.setText(System.currentTimeMillis().toFormattedDate(DateUtil.DATE_FORMAT))
-        textLayoutDate.editText?.setOnClickListener {
-            val calendar = Calendar.getInstance()
-            DatePickerDialog(this, { _, year, monthOfYear, dayOfMonth ->
-                val newDate = Calendar.getInstance()
-                newDate.set(year, monthOfYear, dayOfMonth)
-                addWeightViewModel.onDateSelected(newDate.timeInMillis)
-            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show()
+        binding.textlayoutDate.editText?.apply {
+            setText(System.currentTimeMillis().toFormattedDate(DateUtil.DATE_FORMAT))
+            setOnClickListener {
+                val calendar = Calendar.getInstance()
+                DatePickerDialog(this@AddWeightActivity, { _, year, monthOfYear, dayOfMonth ->
+                    val newDate = Calendar.getInstance()
+                    newDate.set(year, monthOfYear, dayOfMonth)
+                    addWeightViewModel.onDateSelected(newDate.timeInMillis)
+                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show()
+            }
         }
     }
 

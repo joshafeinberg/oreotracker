@@ -10,19 +10,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.joshafeinberg.oreotracker.R
 import com.joshafeinberg.oreotracker.arch.state
 import com.joshafeinberg.oreotracker.arch.util.observe
+import com.joshafeinberg.oreotracker.databinding.FragmentHomeBinding
+import com.joshafeinberg.oreotracker.util.viewBinding
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private val homeViewModel: HomeViewModel by activityViewModels()
-    private lateinit var recyclerview: RecyclerView
+    private val binding by viewBinding(FragmentHomeBinding::bind)
     private lateinit var throwUpAdapter: ThrowUpAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerview = view.findViewById(R.id.recyclerview)
         throwUpAdapter = ThrowUpAdapter()
-        recyclerview.apply {
+        binding.recyclerview.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = throwUpAdapter
         }

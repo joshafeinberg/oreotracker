@@ -2,44 +2,31 @@ package com.joshafeinberg.oreotracker.stats
 
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
-import androidx.core.widget.ContentLoadingProgressBar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.joshafeinberg.oreotracker.R
 import com.joshafeinberg.oreotracker.arch.state
 import com.joshafeinberg.oreotracker.arch.util.observe
+import com.joshafeinberg.oreotracker.databinding.FragmentStatsBinding
 import com.joshafeinberg.oreotracker.sharedmodule.Content
 import com.joshafeinberg.oreotracker.sharedmodule.Stats
 import com.joshafeinberg.oreotracker.sharedmodule.Time
 import com.joshafeinberg.oreotracker.util.readableName
+import com.joshafeinberg.oreotracker.util.viewBinding
 
 class StatsFragment : Fragment(R.layout.fragment_stats) {
 
     private val statsViewModel: StatsViewModel by activityViewModels()
-    private lateinit var textThirtyDayHeader: TextView
-    private lateinit var textThirtyDayContent: TextView
-    private lateinit var textThirtyDayTime: TextView
-    private lateinit var textSevenDayHeader: TextView
-    private lateinit var textSevenDayContent: TextView
-    private lateinit var textSevenDayTime: TextView
+    private val binding by viewBinding(FragmentStatsBinding::bind)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val loadingView = view.findViewById<ContentLoadingProgressBar>(R.id.loading)
-        textThirtyDayHeader = view.findViewById(R.id.text_30_day_header)
-        textThirtyDayContent = view.findViewById(R.id.text_30_day_content)
-        textThirtyDayTime = view.findViewById(R.id.text_30_day_time)
-        textSevenDayHeader = view.findViewById(R.id.text_7_day_header)
-        textSevenDayContent = view.findViewById(R.id.text_7_day_content)
-        textSevenDayTime = view.findViewById(R.id.text_7_day_time)
-
         statsViewModel.state.observe(this) { state ->
             if (state.isLoading) {
-                loadingView.show()
+                binding.loading.show()
             } else {
-                loadingView.hide()
+                binding.loading.hide()
             }
 
             state.stats?.let {
@@ -49,8 +36,8 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
     }
 
     private fun showStats(stats: Stats) {
-        textThirtyDayHeader.text = getString(R.string.last_30_days, stats.lastThirtyDayCount)
-        textSevenDayHeader.text = getString(R.string.last_7_days, stats.lastSevenDayCount)
+        binding.text30DayHeader.text = getString(R.string.last_30_days, stats.lastThirtyDayCount)
+        binding.text7DayHeader.text = getString(R.string.last_7_days, stats.lastSevenDayCount)
 
         val contents = Content.values().map { it.name.toLowerCase() }
         var thirtyDayContentString = ""
@@ -63,8 +50,8 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
             sevenDayContentString += "${content.capitalize()}: $sevenDayCount\n"
         }
 
-        textThirtyDayContent.text = thirtyDayContentString
-        textSevenDayContent.text = sevenDayContentString
+        binding.text30DayContent.text = thirtyDayContentString
+        binding.text7DayContent.text = sevenDayContentString
 
         val times = Time::class.sealedSubclasses.map { it.java }
         var thirtyDayTimesString = ""
@@ -78,8 +65,8 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
             sevenDayTimesString += "${time.readableName}: $sevenDayCount\n"
         }
 
-        textThirtyDayTime.text = thirtyDayTimesString
-        textSevenDayTime.text = sevenDayTimesString
+        binding.text30DayTime.text = thirtyDayTimesString
+        binding.text7DayTime.text = sevenDayTimesString
 
     }
 }
