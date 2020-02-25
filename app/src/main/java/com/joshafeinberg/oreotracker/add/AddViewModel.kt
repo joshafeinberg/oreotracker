@@ -22,6 +22,10 @@ class AddViewModel(override val savedState: SavedStateHandle) : ViewModel(),
     private var selectedTime: Time? = null
     private var selectedContent: Content? = null
 
+    fun onDatePickerSelected() {
+        emitEvent(AddViewEvents.ShowDatePicker(selectedDate))
+    }
+
     fun onDateSelected(selectedDate: Long) {
         this.selectedDate = selectedDate
         updateState { setSelectedDate(selectedDate) }
@@ -73,6 +77,7 @@ class AddViewModel(override val savedState: SavedStateHandle) : ViewModel(),
     sealed class AddViewEvents : ViewEvents {
         object Saving : AddViewEvents()
         data class ThrowUpSaved(val throwUp: ThrowUp) : AddViewEvents()
+        data class ShowDatePicker(val selectedDate: Long) : AddViewEvents()
     }
 
 }

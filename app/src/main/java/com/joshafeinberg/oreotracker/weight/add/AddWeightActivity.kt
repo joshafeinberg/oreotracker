@@ -1,7 +1,6 @@
 package com.joshafeinberg.oreotracker.weight.add
 
 import android.app.Activity
-import android.app.DatePickerDialog
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
@@ -9,7 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.textfield.TextInputLayout
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.joshafeinberg.oreotracker.R
 import com.joshafeinberg.oreotracker.arch.events
 import com.joshafeinberg.oreotracker.arch.state
@@ -18,7 +17,6 @@ import com.joshafeinberg.oreotracker.databinding.ActivityAddWeightBinding
 import com.joshafeinberg.oreotracker.util.DateUtil
 import com.joshafeinberg.oreotracker.util.toFormattedDate
 import com.joshafeinberg.oreotracker.util.viewBinding
-import java.util.Calendar
 
 class AddWeightActivity : AppCompatActivity(R.layout.activity_add_weight) {
 
@@ -53,13 +51,13 @@ class AddWeightActivity : AppCompatActivity(R.layout.activity_add_weight) {
                     })
                     finish()
                 }
+                is AddWeightViewModel.AddViewEvents.ShowDatePicker -> showDatePicker(event.selectedDate)
             }
 
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.add_menu, menu)
         return true
     }
@@ -80,14 +78,20 @@ class AddWeightActivity : AppCompatActivity(R.layout.activity_add_weight) {
         binding.textlayoutDate.editText?.apply {
             setText(System.currentTimeMillis().toFormattedDate(DateUtil.DATE_FORMAT))
             setOnClickListener {
-                val calendar = Calendar.getInstance()
-                DatePickerDialog(this@AddWeightActivity, { _, year, monthOfYear, dayOfMonth ->
-                    val newDate = Calendar.getInstance()
-                    newDate.set(year, monthOfYear, dayOfMonth)
-                    addWeightViewModel.onDateSelected(newDate.timeInMillis)
-                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show()
+                addWeightViewModel.onDatePickerSelected()
             }
         }
+    }
+
+    private fun showDatePicker(selectedDate: Long) {
+        MaterialDatePicker.Builder.datePicker()
+                .setSelection(selectedDate)
+                .build().apply {
+                    addOnPositiveButtonClickListener { selection ->
+                        addWeightViewModel.onDateSelected(selection)
+                    }
+                }
+                .show(supportFragmentManager, null)
     }
 
     private fun hideLoading() {

@@ -35,6 +35,10 @@ class AddWeightViewModel(override val savedState: SavedStateHandle) : ViewModel(
         }
     }
 
+    fun onDatePickerSelected() {
+        emitEvent(AddViewEvents.ShowDatePicker(selectedDate))
+    }
+
     @Parcelize
     data class AddViewState(
             val selectedDate: Long = System.currentTimeMillis()
@@ -45,6 +49,7 @@ class AddWeightViewModel(override val savedState: SavedStateHandle) : ViewModel(
     sealed class AddViewEvents : ViewEvents {
         object Saving : AddViewEvents()
         data class WeightSaved(val weight: Weight) : AddViewEvents()
+        data class ShowDatePicker(val selectedDate: Long) : AddViewEvents()
     }
 
 }

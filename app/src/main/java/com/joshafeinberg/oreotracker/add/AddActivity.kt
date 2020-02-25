@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.joshafeinberg.oreotracker.R
 import com.joshafeinberg.oreotracker.arch.events
 import com.joshafeinberg.oreotracker.arch.state
@@ -62,6 +63,7 @@ class AddActivity : AppCompatActivity() {
                     })
                     finish()
                 }
+                is AddViewModel.AddViewEvents.ShowDatePicker -> showDatePicker(event.selectedDate)
             }
 
         }
@@ -102,15 +104,23 @@ class AddActivity : AppCompatActivity() {
     }
 
     private fun setupDatePicker() {
-        binding.textlayoutDate.editText?.setText(System.currentTimeMillis().toFormattedDate(DateUtil.DATE_FORMAT))
-        binding.textlayoutDate.editText?.setOnClickListener {
-            val calendar = Calendar.getInstance()
-            DatePickerDialog(this, { _, year, monthOfYear, dayOfMonth ->
-                val newDate = Calendar.getInstance()
-                newDate.set(year, monthOfYear, dayOfMonth)
-                addViewModel.onDateSelected(newDate.timeInMillis)
-            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show()
+        binding.textlayoutDate.editText?.apply {
+            setText(System.currentTimeMillis().toFormattedDate(DateUtil.DATE_FORMAT))
+            setOnClickListener {
+                addViewModel.onDatePickerSelected()
+            }
         }
+    }
+
+    private fun showDatePicker(selectedDate: Long) {
+        MaterialDatePicker.Builder.datePicker()
+                .setSelection(selectedDate)
+                .build().apply {
+                    addOnPositiveButtonClickListener { selection ->
+                        addViewModel.onDateSelected(selection)
+                    }
+                }
+                .show(supportFragmentManager, null)
     }
     
     private fun setupTimePicker() {
