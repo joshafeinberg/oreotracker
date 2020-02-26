@@ -8,7 +8,7 @@ interface EventViewModel<E : ViewEvents> {
     }
 }
 
-private val <E: ViewEvents> EventViewModel<E>._events: SingleLiveEvent<E> by lazy {
+private val <E : ViewEvents> EventViewModel<E>._events: SingleLiveEvent<E> by lazy {
     SingleLiveEvent<E>()
 }
 val <E : ViewEvents> EventViewModel<E>.events: LiveData<E>

@@ -1,7 +1,6 @@
 package com.joshafeinberg.oreotracker.add
 
 import android.app.Activity
-import android.app.DatePickerDialog
 import android.app.ProgressDialog
 import android.app.TimePickerDialog
 import android.content.Intent
@@ -114,22 +113,22 @@ class AddActivity : AppCompatActivity() {
 
     private fun showDatePicker(selectedDate: Long) {
         MaterialDatePicker.Builder.datePicker()
-                .setSelection(selectedDate)
-                .build().apply {
-                    addOnPositiveButtonClickListener { selection ->
-                        addViewModel.onDateSelected(selection)
-                    }
+            .setSelection(selectedDate)
+            .build().apply {
+                addOnPositiveButtonClickListener { selection ->
+                    addViewModel.onDateSelected(selection)
                 }
-                .show(supportFragmentManager, null)
+            }
+            .show(supportFragmentManager, null)
     }
-    
+
     private fun setupTimePicker() {
         val times = Time::class.sealedSubclasses.map { kClass -> kClass.java.readableName }
 
         val adapter = ArrayAdapter(
-                this,
-                R.layout.dropdown_menu_popup_item,
-                times
+            this,
+            R.layout.dropdown_menu_popup_item,
+            times
         )
 
         binding.textlayoutTime.setOnFocusChangeListener { _, hasFocus ->
@@ -166,9 +165,9 @@ class AddActivity : AppCompatActivity() {
         val times = Content.values().map { it.readableName }
 
         val adapter = ArrayAdapter(
-                this,
-                R.layout.dropdown_menu_popup_item,
-                times
+            this,
+            R.layout.dropdown_menu_popup_item,
+            times
         )
 
         binding.textlayoutContent.setOnFocusChangeListener { _, hasFocus ->

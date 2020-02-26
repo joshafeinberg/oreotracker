@@ -6,7 +6,6 @@ import com.joshafeinberg.oreotracker.sharedmodule.StatsService
 import org.kodein.di.Kodein
 import org.kodein.di.generic.instance
 import java.util.concurrent.TimeUnit
-import kotlin.collections.mutableMapOf
 import kotlin.collections.set
 
 class StatsController(kodein: Kodein) : KodeinController(kodein), StatsService {
@@ -51,8 +50,8 @@ class StatsController(kodein: Kodein) : KodeinController(kodein), StatsService {
         }
 
         return Stats(
-                lastThirtyDayCount, lastThirtyDayTimeCount, lastThirtyDayContentCount,
-                lastSevenDayCount, lastSevenDayTimeCount, lastSevenDayContentCount
+            lastThirtyDayCount, lastThirtyDayTimeCount, lastThirtyDayContentCount,
+            lastSevenDayCount, lastSevenDayTimeCount, lastSevenDayContentCount
         )
     }
 }

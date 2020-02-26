@@ -57,14 +57,14 @@ import kotlin.reflect.jvm.javaType
 
 fun Route.retrofitService(service: Any) {
     service::class.superclasses
-            .filter { it != Any::class }
-            .forEach { serviceInterface ->
-                serviceInterface.declaredFunctions
-                        .filter { it.isSuspend }
-                        .forEach { declaredFunction ->
-                            process(service, declaredFunction)
-                        }
-            }
+        .filter { it != Any::class }
+        .forEach { serviceInterface ->
+            serviceInterface.declaredFunctions
+                .filter { it.isSuspend }
+                .forEach { declaredFunction ->
+                    process(service, declaredFunction)
+                }
+        }
 }
 
 class RetrofitService {
@@ -78,8 +78,8 @@ class RetrofitService {
         override val key = AttributeKey<RetrofitService>("Retrofit Service")
 
         override fun install(
-                pipeline: Application,
-                configure: Configuration.() -> Unit
+            pipeline: Application,
+            configure: Configuration.() -> Unit
         ): RetrofitService {
             val config = Configuration().apply(configure)
             pipeline.routing {
@@ -168,9 +168,9 @@ private fun Route.process(service: Any, function: KFunction<*>) {
 }
 
 private suspend fun invoke(
-        call: ApplicationCall,
-        service: Any,
-        function: KFunction<*>
+    call: ApplicationCall,
+    service: Any,
+    function: KFunction<*>
 ): Any {
     val conversionService = call.application.conversionService
 

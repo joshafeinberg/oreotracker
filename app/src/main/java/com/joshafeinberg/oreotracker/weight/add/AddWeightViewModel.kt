@@ -41,7 +41,7 @@ class AddWeightViewModel(override val savedState: SavedStateHandle) : ViewModel(
 
     @Parcelize
     data class AddViewState(
-            val selectedDate: Long = System.currentTimeMillis()
+        val selectedDate: Long = System.currentTimeMillis()
     ) : ViewState {
         fun setSelectedDate(selectedDate: Long): AddViewState = copy(selectedDate = selectedDate)
     }

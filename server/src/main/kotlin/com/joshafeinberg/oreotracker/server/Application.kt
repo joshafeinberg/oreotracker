@@ -84,7 +84,7 @@ fun Application.main() {
 
 @KtorExperimentalLocationsAPI
 fun Application.kodeinApplication(
-        kodeinMapper: Kodein.MainBuilder.(Application) -> Unit = {}
+    kodeinMapper: Kodein.MainBuilder.(Application) -> Unit = {}
 ) {
     val application = this
 
@@ -99,9 +99,9 @@ fun Application.kodeinApplication(
         val statsService: StatsService = findService(kodein)
 
         retrofitService(service = Services(
-                sicknessService = sicknessService,
-                weightService = weightService,
-                statsService = statsService
+            sicknessService = sicknessService,
+            weightService = weightService,
+            statsService = statsService
         ))
     }
 }

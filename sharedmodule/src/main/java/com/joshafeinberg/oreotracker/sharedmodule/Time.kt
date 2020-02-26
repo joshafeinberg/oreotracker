@@ -9,13 +9,20 @@ import java.io.Serializable
 
 @Subclass
 sealed class Time : Serializable {
-    @Subclass object Overnight : Time()
-    @Subclass object BetweenMeals : Time()
-    @Subclass object AfterDinner : Time()
-    @Subclass class ExactTime() : Time() {
+    @Subclass
+    object Overnight : Time()
+
+    @Subclass
+    object BetweenMeals : Time()
+
+    @Subclass
+    object AfterDinner : Time()
+
+    @Subclass
+    class ExactTime() : Time() {
         var exactTime: Long = 0L
 
-        constructor(exactTime: Long): this() {
+        constructor(exactTime: Long) : this() {
             this.exactTime = exactTime
         }
 

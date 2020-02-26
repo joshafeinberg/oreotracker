@@ -42,8 +42,8 @@ class ThrowUpAdapter : RecyclerView.Adapter<ThrowUpAdapter.ViewHolder>() {
             textDate.text = item.date.toFormattedDate(DateUtil.DATE_FORMAT)
             textTime.text = when (item.time) {
                 is Time.ExactTime -> itemView.context.getString(
-                        R.string.exact_time_format,
-                        (item.time as Time.ExactTime).exactTime.toFormattedDate(DateUtil.TIME_FORMAT)
+                    R.string.exact_time_format,
+                    (item.time as Time.ExactTime).exactTime.toFormattedDate(DateUtil.TIME_FORMAT)
                 )
                 else -> item.time.javaClass.readableName
             }

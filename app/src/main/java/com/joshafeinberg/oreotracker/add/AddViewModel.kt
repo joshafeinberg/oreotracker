@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
 
 class AddViewModel(override val savedState: SavedStateHandle) : ViewModel(),
-        SavedStateViewModel<AddViewModel.AddViewState, AddViewModel.AddViewEvents> {
+    SavedStateViewModel<AddViewModel.AddViewState, AddViewModel.AddViewEvents> {
     override val initialState = AddViewState()
 
     private var selectedDate: Long = System.currentTimeMillis()
@@ -63,10 +63,10 @@ class AddViewModel(override val savedState: SavedStateHandle) : ViewModel(),
 
     @Parcelize
     data class AddViewState(
-            val selectedDate: Long = System.currentTimeMillis(),
-            val selectedTime: Time? = null,
-            val timeFieldVisible: Boolean = false,
-            val selectedContent: Content? = null
+        val selectedDate: Long = System.currentTimeMillis(),
+        val selectedTime: Time? = null,
+        val timeFieldVisible: Boolean = false,
+        val selectedContent: Content? = null
     ) : ViewState {
         fun setSelectedDate(selectedDate: Long): AddViewState = copy(selectedDate = selectedDate)
         fun toggleTimeField(showTimeField: Boolean) = copy(selectedTime = null, timeFieldVisible = showTimeField)

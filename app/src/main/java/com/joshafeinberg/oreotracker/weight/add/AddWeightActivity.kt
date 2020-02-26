@@ -65,8 +65,8 @@ class AddWeightActivity : AppCompatActivity(R.layout.activity_add_weight) {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return if (item?.itemId == R.id.action_save) {
             addWeightViewModel.onSaveClicked(
-                    binding.textlayoutMyWeight.editText?.text?.toString(),
-                    binding.textlayoutOurWeight.editText?.text?.toString()
+                binding.textlayoutMyWeight.editText?.text?.toString(),
+                binding.textlayoutOurWeight.editText?.text?.toString()
             )
             true
         } else {
@@ -85,13 +85,13 @@ class AddWeightActivity : AppCompatActivity(R.layout.activity_add_weight) {
 
     private fun showDatePicker(selectedDate: Long) {
         MaterialDatePicker.Builder.datePicker()
-                .setSelection(selectedDate)
-                .build().apply {
-                    addOnPositiveButtonClickListener { selection ->
-                        addWeightViewModel.onDateSelected(selection)
-                    }
+            .setSelection(selectedDate)
+            .build().apply {
+                addOnPositiveButtonClickListener { selection ->
+                    addWeightViewModel.onDateSelected(selection)
                 }
-                .show(supportFragmentManager, null)
+            }
+            .show(supportFragmentManager, null)
     }
 
     private fun hideLoading() {
