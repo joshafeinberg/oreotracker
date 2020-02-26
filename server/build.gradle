@@ -7,13 +7,16 @@ sourceSets {
 }
 
 dependencies {
-    compile deps.kotlin.stdlib
-    compile deps.ktor.servlet
-    compile deps.ktor.locations
-    compile 'org.kodein.di:kodein-di-generic-jvm:6.2.0'
-    compile 'com.googlecode.objectify:objectify:6.0.3'
-    compile "com.bnorm.ktor.retrofit:ktor-retrofit:0.1.1"
+    implementation deps.kotlin.stdlib
 
+    implementation deps.ktor.gson
+    implementation deps.ktor.locations
+    implementation deps.ktor.retrofit
+    implementation deps.ktor.servlet
+
+    implementation deps.kodein
+    implementation deps.objectify
+    
     implementation project(':sharedmodule')
 
     providedCompile "com.google.appengine:appengine:${versions.appengine_version}"

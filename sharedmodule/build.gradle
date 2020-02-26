@@ -3,9 +3,9 @@ apply plugin: 'kotlin'
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    compile deps.kotlin.stdlib
-    compile deps.ktor.gson
-    compile "com.bnorm.ktor.retrofit:ktor-retrofit:0.1.1"
+    implementation deps.kotlin.stdlib
+    implementation deps.ktor.gson
+    implementation deps.ktor.retrofit
 }
 
 sourceCompatibility = "7"
