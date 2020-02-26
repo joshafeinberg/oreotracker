@@ -2,7 +2,6 @@ package com.joshafeinberg.oreotracker.home
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.widget.ContentLoadingProgressBar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,13 +26,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             adapter = sicknessAdapter
         }
 
-        val loadingView = view.findViewById<ContentLoadingProgressBar>(R.id.loading)
-
         homeViewModel.state.observe(viewLifecycleOwner) { state ->
             if (state.isLoading) {
-                loadingView.show()
+                binding.loading.show()
             } else {
-                loadingView.hide()
+                binding.loading.hide()
             }
 
             sicknessAdapter.items = state.items

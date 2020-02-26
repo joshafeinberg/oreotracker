@@ -22,7 +22,7 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        statsViewModel.state.observe(this) { state ->
+        statsViewModel.state.observe(viewLifecycleOwner) { state ->
             if (state.isLoading) {
                 binding.loading.show()
             } else {

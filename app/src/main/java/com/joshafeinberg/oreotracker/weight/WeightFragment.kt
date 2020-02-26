@@ -29,7 +29,7 @@ class WeightFragment : Fragment(R.layout.fragment_weight) {
 
         val loadingView = view.findViewById<ContentLoadingProgressBar>(R.id.loading)
 
-        weightViewModel.state.observe(this) { state ->
+        weightViewModel.state.observe(viewLifecycleOwner) { state ->
             if (state.isLoading) {
                 loadingView.show()
             } else {
