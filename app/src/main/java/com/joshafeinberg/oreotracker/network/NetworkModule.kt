@@ -20,8 +20,8 @@ object NetworkModule {
                 .build()
 
         Retrofit.Builder()
-                //.baseUrl("https://oreo-tracker.appspot.com")
-                .baseUrl("http://10.0.2.2:8080")
+                .baseUrl("https://oreo-tracker.appspot.com")
+                //.baseUrl("http://10.0.2.2:8080")
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create(
                         GsonBuilder()
