@@ -1,11 +1,11 @@
 package com.joshafeinberg.oreotracker.weight.add
 
 import android.app.Activity
-import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -22,7 +22,6 @@ class AddWeightActivity : AppCompatActivity(R.layout.activity_add_weight) {
 
     private val addWeightViewModel: AddWeightViewModel by viewModels()
     private val binding by viewBinding(ActivityAddWeightBinding::inflate)
-    private var progressDialog: ProgressDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,17 +40,14 @@ class AddWeightActivity : AppCompatActivity(R.layout.activity_add_weight) {
         addWeightViewModel.events.observe(this) { event ->
             hideLoading()
             when (event) {
-                is AddWeightViewModel.AddViewEvents.Saving -> {
-                    progressDialog = ProgressDialog(this)
-                    progressDialog?.show()
-                }
-                is AddWeightViewModel.AddViewEvents.WeightSaved -> {
+                is AddWeightEvents.Saving -> binding.layoutProgress.visibility = View.VISIBLE
+                is AddWeightEvents.WeightSaved -> {
                     setResult(Activity.RESULT_OK, Intent().apply {
                         putExtra(EXTRA_WEIGHT, event.weight)
                     })
                     finish()
                 }
-                is AddWeightViewModel.AddViewEvents.ShowDatePicker -> showDatePicker(event.selectedDate)
+                is AddWeightEvents.ShowDatePicker -> showDatePicker(event.selectedDate)
             }
 
         }
@@ -95,8 +91,7 @@ class AddWeightActivity : AppCompatActivity(R.layout.activity_add_weight) {
     }
 
     private fun hideLoading() {
-        progressDialog?.hide()
-        progressDialog = null
+        binding.layoutProgress.visibility = View.GONE
     }
 
     companion object {

@@ -1,7 +1,6 @@
 package com.joshafeinberg.oreotracker.add
 
 import android.app.Activity
-import android.app.ProgressDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
@@ -30,7 +29,6 @@ class AddActivity : AppCompatActivity() {
 
     private val addViewModel: AddViewModel by viewModels()
     private val binding by viewBinding(ActivityAddBinding::inflate)
-    private var progressDialog: ProgressDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,17 +50,14 @@ class AddActivity : AppCompatActivity() {
         addViewModel.events.observe(this) { event ->
             hideLoading()
             when (event) {
-                is AddViewModel.AddViewEvents.Saving -> {
-                    progressDialog = ProgressDialog(this)
-                    progressDialog?.show()
-                }
-                is AddViewModel.AddViewEvents.ThrowUpSaved -> {
+                is AddEvents.Saving -> binding.layoutProgress.visibility = View.VISIBLE
+                is AddEvents.ThrowUpSaved -> {
                     setResult(Activity.RESULT_OK, Intent().apply {
                         putExtra(EXTRA_THROW_UP, event.throwUp)
                     })
                     finish()
                 }
-                is AddViewModel.AddViewEvents.ShowDatePicker -> showDatePicker(event.selectedDate)
+                is AddEvents.ShowDatePicker -> showDatePicker(event.selectedDate)
             }
 
         }
@@ -83,7 +78,7 @@ class AddActivity : AppCompatActivity() {
         }
     }
 
-    private fun handleStateChanges(state: AddViewModel.AddViewState) {
+    private fun handleStateChanges(state: AddViewState) {
         binding.textlayoutDate.editText?.setText(state.selectedDate.toFormattedDate(DateUtil.DATE_FORMAT))
         state.selectedTime?.let { time ->
             binding.textlayoutTime.editText?.setText(time::class.java.readableName)
@@ -188,8 +183,7 @@ class AddActivity : AppCompatActivity() {
     }
 
     private fun hideLoading() {
-        progressDialog?.hide()
-        progressDialog = null
+        binding.layoutProgress.visibility = View.GONE
     }
 
     companion object {

@@ -3,17 +3,16 @@ package com.joshafeinberg.oreotracker.home
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.joshafeinberg.oreotracker.R
+import com.joshafeinberg.oreotracker.databinding.ItemThrowUpBinding
 import com.joshafeinberg.oreotracker.sharedmodule.ThrowUp
 import com.joshafeinberg.oreotracker.sharedmodule.Time
 import com.joshafeinberg.oreotracker.util.DateUtil
 import com.joshafeinberg.oreotracker.util.readableName
 import com.joshafeinberg.oreotracker.util.toFormattedDate
 
-
-class ThrowUpAdapter : RecyclerView.Adapter<ThrowUpAdapter.ViewHolder>() {
+class SicknessAdapter : RecyclerView.Adapter<SicknessAdapter.ViewHolder>() {
 
     var items: List<ThrowUp> = emptyList()
         set(value) {
@@ -33,21 +32,18 @@ class ThrowUpAdapter : RecyclerView.Adapter<ThrowUpAdapter.ViewHolder>() {
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        private val textDate = itemView.findViewById<TextView>(R.id.text_date)
-        private val textTime = itemView.findViewById<TextView>(R.id.text_time)
-        private val textContent = itemView.findViewById<TextView>(R.id.text_content)
+        private val binding = ItemThrowUpBinding.bind(itemView)
 
         fun bind(item: ThrowUp) {
-            textDate.text = item.date.toFormattedDate(DateUtil.DATE_FORMAT)
-            textTime.text = when (item.time) {
+            binding.textDate.text = item.date.toFormattedDate(DateUtil.DATE_FORMAT)
+            binding.textTime.text = when (item.time) {
                 is Time.ExactTime -> itemView.context.getString(
                     R.string.exact_time_format,
                     (item.time as Time.ExactTime).exactTime.toFormattedDate(DateUtil.TIME_FORMAT)
                 )
                 else -> item.time.javaClass.readableName
             }
-            textContent.text = item.content.readableName
+            binding.textContent.text = item.content.readableName
         }
     }
 

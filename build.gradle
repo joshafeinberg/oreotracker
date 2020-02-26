@@ -10,7 +10,7 @@ buildscript {
         'okio'                    : '2.2.2',
         'appengine_version'       : '1.9.74',
         'appengine_plugin_version': '2.0.1',
-        'retrofit'                : '2.6.1',
+        'retrofit'                : '2.7.2',
         'lifecycle_version'       : '2.2.0',
         'activityx'               : '1.1.0',
         'appcompat'               : '1.2.0-alpha02',

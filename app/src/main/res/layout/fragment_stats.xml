@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -57,7 +56,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"/>
 
-    <android.support.constraint.Barrier
+    <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier_30_day"
         android:layout_width="wrap_content"
         android:layout_height="1dp"
@@ -114,7 +113,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"/>
 
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_middle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -132,4 +131,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_gravity="center"/>
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

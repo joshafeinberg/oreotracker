@@ -16,27 +16,27 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private val homeViewModel: HomeViewModel by activityViewModels()
     private val binding by viewBinding(FragmentHomeBinding::bind)
-    private lateinit var throwUpAdapter: ThrowUpAdapter
+    private lateinit var sicknessAdapter: SicknessAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        throwUpAdapter = ThrowUpAdapter()
+        sicknessAdapter = SicknessAdapter()
         binding.recyclerview.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = throwUpAdapter
+            adapter = sicknessAdapter
         }
 
         val loadingView = view.findViewById<ContentLoadingProgressBar>(R.id.loading)
 
-        homeViewModel.state.observe(this) { state ->
+        homeViewModel.state.observe(viewLifecycleOwner) { state ->
             if (state.isLoading) {
                 loadingView.show()
             } else {
                 loadingView.hide()
             }
 
-            throwUpAdapter.items = state.items
+            sicknessAdapter.items = state.items
         }
     }
 }
