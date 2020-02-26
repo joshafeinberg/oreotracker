@@ -5,6 +5,7 @@ dependencies {
 
     compile deps.kotlin.stdlib
     compile deps.ktor.gson
+    compile "com.bnorm.ktor.retrofit:ktor-retrofit:0.1.1"
 }
 
 sourceCompatibility = "7"

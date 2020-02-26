@@ -12,7 +12,7 @@ dependencies {
     compile deps.ktor.locations
     compile 'org.kodein.di:kodein-di-generic-jvm:6.2.0'
     compile 'com.googlecode.objectify:objectify:6.0.3'
-
+    compile "com.bnorm.ktor.retrofit:ktor-retrofit:0.1.1"
 
     implementation project(':sharedmodule')
 

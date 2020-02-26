@@ -1,16 +1,14 @@
 package com.joshafeinberg.oreotracker.network
 
 import com.google.gson.GsonBuilder
-import com.joshafeinberg.oreotracker.sharedmodule.*
+import com.joshafeinberg.oreotracker.sharedmodule.Content
+import com.joshafeinberg.oreotracker.sharedmodule.OreoTrackerNetwork
+import com.joshafeinberg.oreotracker.sharedmodule.Time
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
 import java.util.concurrent.TimeUnit
-
 
 object NetworkModule {
 
@@ -22,8 +20,8 @@ object NetworkModule {
                 .build()
 
         Retrofit.Builder()
-                .baseUrl("https://oreo-tracker.appspot.com")
-                //.baseUrl("http://10.0.2.2:8080")
+                //.baseUrl("https://oreo-tracker.appspot.com")
+                .baseUrl("http://10.0.2.2:8080")
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create(
                         GsonBuilder()
@@ -39,19 +37,3 @@ object NetworkModule {
     }
 }
 
-interface OreoTrackerNetwork {
-    @GET(SICKNESS_GET)
-    suspend fun getThrowUps(): List<ThrowUp>
-
-    @POST(SICKNESS_POST)
-    suspend fun postThrowUp(@Body body: ThrowUp)
-
-    @GET(STATS_GET)
-    suspend fun getStats(): Stats
-
-    @GET(WEIGHT_GET)
-    suspend fun getWeights(): List<Weight>
-
-    @POST(WEIGHT_POST)
-    suspend fun postWeight(@Body body: Weight)
-}
