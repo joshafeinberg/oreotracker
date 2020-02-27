@@ -46,5 +46,4 @@ class SicknessAdapter : RecyclerView.Adapter<SicknessAdapter.ViewHolder>() {
             binding.textContent.text = item.content.readableName
         }
     }
-
 }

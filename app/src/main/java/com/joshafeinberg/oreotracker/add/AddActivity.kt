@@ -59,7 +59,6 @@ class AddActivity : AppCompatActivity() {
                 }
                 is AddEvents.ShowDatePicker -> showDatePicker(event.selectedDate)
             }
-
         }
     }
 

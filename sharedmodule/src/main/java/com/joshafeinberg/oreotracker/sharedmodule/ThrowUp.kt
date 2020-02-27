@@ -15,9 +15,11 @@ class ThrowUp : Serializable {
 
     constructor()
 
-    constructor(date: Long,
-                time: Time,
-                content: Content) : this() {
+    constructor(
+        date: Long,
+        time: Time,
+        content: Content
+    ) : this() {
         this.date = date
         this.time = time
         this.content = content
@@ -26,5 +28,4 @@ class ThrowUp : Serializable {
     override fun toString(): String {
         return "ThrowUp(date=$date, time=$time, content=$content)"
     }
-
 }

@@ -8,8 +8,8 @@ import com.joshafeinberg.oreotracker.network.NetworkModule
 import com.joshafeinberg.oreotracker.sharedmodule.Content
 import com.joshafeinberg.oreotracker.sharedmodule.ThrowUp
 import com.joshafeinberg.oreotracker.sharedmodule.Time
-import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
+import kotlinx.coroutines.launch
 
 class AddViewModel(override val savedState: SavedStateHandle) : ViewModel(),
     SavedStateViewModel<AddViewState, AddEvents> {

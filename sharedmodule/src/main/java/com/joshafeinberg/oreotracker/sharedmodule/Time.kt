@@ -31,7 +31,6 @@ sealed class Time : Serializable {
         }
     }
 
-
     class TimeAdapter : TypeAdapter<Time>() {
         override fun write(writer: JsonWriter, value: Time?) {
             value?.let {
@@ -75,6 +74,5 @@ sealed class Time : Serializable {
             reader.endObject()
             return result!!
         }
-
     }
 }

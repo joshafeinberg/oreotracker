@@ -13,11 +13,11 @@ import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
 inline fun <T : ViewBinding> AppCompatActivity.viewBinding(
-    crossinline bindingInflater: (LayoutInflater) -> T) =
+    crossinline bindingInflater: (LayoutInflater) -> T
+) =
     lazy(LazyThreadSafetyMode.NONE) {
         bindingInflater.invoke(layoutInflater)
     }
-
 
 class FragmentViewBindingDelegate<T : ViewBinding>(
     val fragment: Fragment,

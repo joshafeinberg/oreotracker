@@ -10,5 +10,4 @@ class WeightRepository(private val objectify: Objectify) {
     fun addWeight(weight: Weight) {
         objectify.save().entity(weight)
     }
-
 }

@@ -35,6 +35,14 @@ import io.ktor.routing.put
 import io.ktor.routing.route
 import io.ktor.routing.routing
 import io.ktor.util.AttributeKey
+import java.lang.reflect.InvocationTargetException
+import kotlin.reflect.KClass
+import kotlin.reflect.KFunction
+import kotlin.reflect.KParameter
+import kotlin.reflect.full.callSuspend
+import kotlin.reflect.full.declaredFunctions
+import kotlin.reflect.full.superclasses
+import kotlin.reflect.jvm.javaType
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -46,14 +54,6 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
-import java.lang.reflect.InvocationTargetException
-import kotlin.reflect.KClass
-import kotlin.reflect.KFunction
-import kotlin.reflect.KParameter
-import kotlin.reflect.full.callSuspend
-import kotlin.reflect.full.declaredFunctions
-import kotlin.reflect.full.superclasses
-import kotlin.reflect.jvm.javaType
 
 fun Route.retrofitService(service: Any) {
     service::class.superclasses

@@ -10,5 +10,4 @@ class SicknessRepository(private val objectify: Objectify) {
     fun addThrowUp(throwUp: ThrowUp) {
         objectify.save().entity(throwUp)
     }
-
 }

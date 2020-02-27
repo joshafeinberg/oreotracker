@@ -9,7 +9,13 @@ import com.joshafeinberg.oreotracker.server.tracker.SicknessController
 import com.joshafeinberg.oreotracker.server.tracker.SicknessRepository
 import com.joshafeinberg.oreotracker.server.weight.WeightController
 import com.joshafeinberg.oreotracker.server.weight.WeightRepository
-import com.joshafeinberg.oreotracker.sharedmodule.*
+import com.joshafeinberg.oreotracker.sharedmodule.Content
+import com.joshafeinberg.oreotracker.sharedmodule.SicknessService
+import com.joshafeinberg.oreotracker.sharedmodule.StatsService
+import com.joshafeinberg.oreotracker.sharedmodule.ThrowUp
+import com.joshafeinberg.oreotracker.sharedmodule.Time
+import com.joshafeinberg.oreotracker.sharedmodule.Weight
+import com.joshafeinberg.oreotracker.sharedmodule.WeightService
 import io.ktor.application.Application
 import io.ktor.application.call
 import io.ktor.application.install

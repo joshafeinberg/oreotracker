@@ -4,11 +4,11 @@ import com.google.gson.GsonBuilder
 import com.joshafeinberg.oreotracker.sharedmodule.Content
 import com.joshafeinberg.oreotracker.sharedmodule.OreoTrackerNetwork
 import com.joshafeinberg.oreotracker.sharedmodule.Time
+import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
 
 object NetworkModule {
 
@@ -21,7 +21,7 @@ object NetworkModule {
 
         Retrofit.Builder()
             .baseUrl("https://oreo-tracker.appspot.com")
-            //.baseUrl("http://10.0.2.2:8080")
+            // .baseUrl("http://10.0.2.2:8080")
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(
                 GsonBuilder()
@@ -36,4 +36,3 @@ object NetworkModule {
         retrofit.create(OreoTrackerNetwork::class.java)
     }
 }
-

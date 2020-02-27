@@ -37,5 +37,4 @@ class WeightAdapter : RecyclerView.Adapter<WeightAdapter.ViewHolder>() {
             binding.textWeight.text = String.format("%.1f lbs", item.weight)
         }
     }
-
 }

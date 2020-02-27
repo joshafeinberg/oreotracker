@@ -67,6 +67,5 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
 
         binding.text30DayTime.text = thirtyDayTimesString
         binding.text7DayTime.text = sevenDayTimesString
-
     }
 }

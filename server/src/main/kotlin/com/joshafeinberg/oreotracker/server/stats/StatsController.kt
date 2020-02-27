@@ -3,10 +3,10 @@ package com.joshafeinberg.oreotracker.server.stats
 import com.joshafeinberg.oreotracker.server.di.KodeinController
 import com.joshafeinberg.oreotracker.sharedmodule.Stats
 import com.joshafeinberg.oreotracker.sharedmodule.StatsService
-import org.kodein.di.Kodein
-import org.kodein.di.generic.instance
 import java.util.concurrent.TimeUnit
 import kotlin.collections.set
+import org.kodein.di.Kodein
+import org.kodein.di.generic.instance
 
 class StatsController(kodein: Kodein) : KodeinController(kodein), StatsService {
 

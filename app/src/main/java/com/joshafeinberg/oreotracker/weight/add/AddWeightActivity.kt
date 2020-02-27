@@ -49,7 +49,6 @@ class AddWeightActivity : AppCompatActivity(R.layout.activity_add_weight) {
                 }
                 is AddWeightEvents.ShowDatePicker -> showDatePicker(event.selectedDate)
             }
-
         }
     }
 
