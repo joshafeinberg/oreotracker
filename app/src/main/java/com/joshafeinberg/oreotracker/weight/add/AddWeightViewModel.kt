@@ -1,18 +1,15 @@
 package com.joshafeinberg.oreotracker.weight.add
 
-import android.text.Editable
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.joshafeinberg.oreotracker.arch.ViewEvents
-import com.joshafeinberg.oreotracker.arch.ViewState
-import com.joshafeinberg.oreotracker.arch.ViewStateManager
+import com.joshafeinberg.oreotracker.arch.SavedStateViewModel
 import com.joshafeinberg.oreotracker.network.NetworkModule
 import com.joshafeinberg.oreotracker.sharedmodule.Weight
-import kotlinx.android.parcel.Parcelize
 import kotlinx.coroutines.launch
 
-class AddWeightViewModel(savedState: SavedStateHandle) : ViewStateManager.ViewStateViewModel<AddWeightViewModel.AddViewState, AddWeightViewModel.AddViewEvents>(savedState) {
-    override val initialState = AddViewState()
+class AddWeightViewModel(override val savedState: SavedStateHandle) : ViewModel(), SavedStateViewModel<AddWeightViewState, AddWeightEvents> {
+    override val initialState = AddWeightViewState()
 
     private var selectedDate: Long = System.currentTimeMillis()
 
@@ -28,23 +25,14 @@ class AddWeightViewModel(savedState: SavedStateHandle) : ViewStateManager.ViewSt
         val myWeightFloat = myWeight.toFloatOrNull() ?: return
         val ourWeightFloat = ourWeight.toFloatOrNull() ?: return
         val finalWeight = Weight(selectedDate, ourWeightFloat - myWeightFloat)
-        emitEvent(AddViewEvents.Saving)
+        emitEvent(AddWeightEvents.Saving)
         viewModelScope.launch {
             NetworkModule.adapter.postWeight(finalWeight)
-            emitEvent(AddViewEvents.WeightSaved(finalWeight))
+            emitEvent(AddWeightEvents.WeightSaved(finalWeight))
         }
     }
 
-    @Parcelize
-    data class AddViewState(
-            val selectedDate: Long = System.currentTimeMillis()
-    ) : ViewState {
-        fun setSelectedDate(selectedDate: Long): AddViewState = copy(selectedDate = selectedDate)
+    fun onDatePickerSelected() {
+        emitEvent(AddWeightEvents.ShowDatePicker(selectedDate))
     }
-
-    sealed class AddViewEvents : ViewEvents {
-        object Saving : AddViewEvents()
-        data class WeightSaved(val weight: Weight) : AddViewEvents()
-    }
-
 }

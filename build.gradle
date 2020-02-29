@@ -2,34 +2,60 @@
 
 buildscript {
     ext.versions = [
-            'kotlin': '1.3.41',
-            'ktor': '1.2.3',
-            'okio': '2.2.2',
-            'appengine_version': '1.9.74',
-            'appengine_plugin_version': '2.0.1',
-            'retrofit': '2.6.1',
-            'lifecycle_version': '2.2.0-alpha03',
-            'activityx': '1.1.0-alpha02',
-            'fragmentx': '1.2.0-alpha02'
+        'kotlin'                  : '1.3.61',
+        'kodein'                  : '6.2.0',
+        'ktor'                    : '1.2.3',
+        'ktor_retrofit'           : '0.1.2',
+        'objectify'               : '6.0.3',
+        'okio'                    : '2.2.2',
+        'appengine_version'       : '1.9.74',
+        'appengine_plugin_version': '2.0.1',
+        'retrofit'                : '2.7.2',
+        'lifecycle_version'       : '2.2.0',
+        'activityx'               : '1.1.0',
+        'appcompat'               : '1.2.0-alpha02',
+        'constraintlayout'        : '2.0.0-beta4',
+        'coordinatorlayout'       : '1.1.0',
+        'fragmentx'               : '1.2.2',
+        'material'                : '1.1.0',
+        'httplogger'              : '3.8.0'
     ]
 
     ext.deps = [
-            'kotlin': [
-                    'stdlib': "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}",
-            ],
-            'ktor': [
-                    'servlet': "io.ktor:ktor-server-servlet:${versions.ktor}",
-                    'locations': "io.ktor:ktor-locations:${versions.ktor}",
-                    'gson': "io.ktor:ktor-gson:${versions.ktor}",
-                    'server': "io.ktor:ktor-server-core:${versions.ktor}",
-                    'netty': "io.ktor:ktor-server-netty:${versions.ktor}",
-                    'test': "io.ktor:ktor-server-test-host:${versions.ktor}",
-            ],
-            'okio': "com.squareup.okio:okio:${versions.okio}",
-            'retrofit': [
-                    'client': "com.squareup.retrofit2:retrofit:${versions.retrofit}",
-                    'gson': "com.squareup.retrofit2:converter-gson:${versions.retrofit}"
+        'androidx' : [
+            'activityktx': "androidx.activity:activity-ktx:${versions.activityx}",
+            'appcompat': "androidx.appcompat:appcompat:${versions.appcompat}",
+            'constraintlayout': "androidx.constraintlayout:constraintlayout:${versions.constraintlayout}",
+            'coordinatorlayout': "androidx.coordinatorlayout:coordinatorlayout:${versions.coordinatorlayout}",
+            'fragmentktx': "androidx.fragment:fragment-ktx:${versions.fragmentx}",
+            'lifecycle' : [
+                'common': "androidx.lifecycle:lifecycle-common-java8:${versions.lifecycle_version}",
+                'extensions': "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle_version}",
+                'savedstate': "androidx.lifecycle:lifecycle-viewmodel-savedstate:${versions.lifecycle_version}",
+                'viewmodel': "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.lifecycle_version}"
             ]
+        ],
+        'material': "com.google.android.material:material:${versions.material}",
+        'kodein': "org.kodein.di:kodein-di-generic-jvm:${versions.kodein}",
+        'kotlin'  : [
+            'stdlib': "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}",
+        ],
+        'ktor'    : [
+            'servlet'  : "io.ktor:ktor-server-servlet:${versions.ktor}",
+            'locations': "io.ktor:ktor-locations:${versions.ktor}",
+            'gson'     : "io.ktor:ktor-gson:${versions.ktor}",
+            'server'   : "io.ktor:ktor-server-core:${versions.ktor}",
+            'netty'    : "io.ktor:ktor-server-netty:${versions.ktor}",
+            'retrofit' : "com.bnorm.ktor.retrofit:ktor-retrofit:${versions.ktor_retrofit}",
+            'test'     : "io.ktor:ktor-server-test-host:${versions.ktor}",
+        ],
+        'objectify' : "com.googlecode.objectify:objectify:${versions.objectify}",
+        'okio'    : "com.squareup.okio:okio:${versions.okio}",
+        'retrofit': [
+            'client': "com.squareup.retrofit2:retrofit:${versions.retrofit}",
+            'gson'  : "com.squareup.retrofit2:converter-gson:${versions.retrofit}",
+            'logger': "com.squareup.okhttp3:logging-interceptor:${versions.httplogger}"
+        ]
     ]
 
     repositories {
@@ -37,12 +63,9 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.1'
+        classpath 'com.android.tools.build:gradle:3.6.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
         classpath "com.google.cloud.tools:appengine-gradle-plugin:${versions.appengine_plugin_version}"
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
     }
 }
 

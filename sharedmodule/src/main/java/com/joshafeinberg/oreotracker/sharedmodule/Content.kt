@@ -26,6 +26,5 @@ enum class Content : Serializable {
         override fun read(reader: JsonReader): Content {
             return fromString(reader.nextString())
         }
-
     }
 }

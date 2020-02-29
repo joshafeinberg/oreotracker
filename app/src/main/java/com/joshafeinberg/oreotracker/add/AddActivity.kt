@@ -1,8 +1,6 @@
 package com.joshafeinberg.oreotracker.add
 
 import android.app.Activity
-import android.app.DatePickerDialog
-import android.app.ProgressDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
@@ -13,43 +11,35 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.textfield.TextInputLayout
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.joshafeinberg.oreotracker.R
+import com.joshafeinberg.oreotracker.arch.events
+import com.joshafeinberg.oreotracker.arch.state
 import com.joshafeinberg.oreotracker.arch.util.observe
+import com.joshafeinberg.oreotracker.databinding.ActivityAddBinding
 import com.joshafeinberg.oreotracker.sharedmodule.Content
 import com.joshafeinberg.oreotracker.sharedmodule.Time
 import com.joshafeinberg.oreotracker.util.DateUtil
 import com.joshafeinberg.oreotracker.util.readableName
 import com.joshafeinberg.oreotracker.util.toFormattedDate
-import java.util.*
-
+import com.joshafeinberg.oreotracker.util.viewBinding
+import java.util.Calendar
 
 class AddActivity : AppCompatActivity() {
 
     private val addViewModel: AddViewModel by viewModels()
-    private lateinit var textLayoutDate: TextInputLayout
-    private lateinit var textLayoutTime: TextInputLayout
-    private lateinit var textLayoutExactTime: TextInputLayout
-    private lateinit var textLayoutContent: TextInputLayout
-    private var progressDialog: ProgressDialog? = null
+    private val binding by viewBinding(ActivityAddBinding::inflate)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add)
+        setContentView(binding.root)
 
-        setSupportActionBar(findViewById(R.id.toolbar))
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        textLayoutDate = findViewById(R.id.textlayout_date)
         setupDatePicker()
-        
-        textLayoutTime = findViewById(R.id.textlayout_time)
         setupTimePicker()
-
-        textLayoutExactTime = findViewById(R.id.textlayout_time_exact)
         setupExactTimePicker()
-
-        textLayoutContent = findViewById(R.id.textlayout_content)
         setupContentPicker()
 
         addViewModel.state.observe(this) { state ->
@@ -60,18 +50,15 @@ class AddActivity : AppCompatActivity() {
         addViewModel.events.observe(this) { event ->
             hideLoading()
             when (event) {
-                is AddViewModel.AddViewEvents.Saving -> {
-                    progressDialog = ProgressDialog(this)
-                    progressDialog?.show()
-                }
-                is AddViewModel.AddViewEvents.ThrowUpSaved -> {
+                is AddEvents.Saving -> binding.layoutProgress.visibility = View.VISIBLE
+                is AddEvents.ThrowUpSaved -> {
                     setResult(Activity.RESULT_OK, Intent().apply {
                         putExtra(EXTRA_THROW_UP, event.throwUp)
                     })
                     finish()
                 }
+                is AddEvents.ShowDatePicker -> showDatePicker(event.selectedDate)
             }
-
         }
     }
 
@@ -90,53 +77,61 @@ class AddActivity : AppCompatActivity() {
         }
     }
 
-    private fun handleStateChanges(state: AddViewModel.AddViewState) {
-        textLayoutDate.editText?.setText(state.selectedDate.toFormattedDate(DateUtil.DATE_FORMAT))
+    private fun handleStateChanges(state: AddViewState) {
+        binding.textlayoutDate.editText?.setText(state.selectedDate.toFormattedDate(DateUtil.DATE_FORMAT))
         state.selectedTime?.let { time ->
-            textLayoutTime.editText?.setText(time::class.java.readableName)
+            binding.textlayoutTime.editText?.setText(time::class.java.readableName)
             if (time is Time.ExactTime) {
-                textLayoutExactTime.editText?.setText(time.exactTime.toFormattedDate(DateUtil.TIME_FORMAT))
+                binding.textlayoutTimeExact.editText?.setText(time.exactTime.toFormattedDate(DateUtil.TIME_FORMAT))
             }
         }
 
         if (state.timeFieldVisible) {
-            textLayoutExactTime.visibility = View.VISIBLE
-            textLayoutTime.editText?.setText(Time.ExactTime::class.java.readableName)
+            binding.textlayoutTimeExact.visibility = View.VISIBLE
+            binding.textlayoutTime.editText?.setText(Time.ExactTime::class.java.readableName)
         } else {
-            textLayoutExactTime.visibility = View.GONE
+            binding.textlayoutTimeExact.visibility = View.GONE
         }
 
-        textLayoutContent.editText?.setText(state.selectedContent?.readableName)
+        binding.textlayoutContent.editText?.setText(state.selectedContent?.readableName)
     }
 
     private fun setupDatePicker() {
-        textLayoutDate.editText?.setText(System.currentTimeMillis().toFormattedDate(DateUtil.DATE_FORMAT))
-        textLayoutDate.editText?.setOnClickListener {
-            val calendar = Calendar.getInstance()
-            DatePickerDialog(this, { _, year, monthOfYear, dayOfMonth ->
-                val newDate = Calendar.getInstance()
-                newDate.set(year, monthOfYear, dayOfMonth)
-                addViewModel.onDateSelected(newDate.timeInMillis)
-            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show()
+        binding.textlayoutDate.editText?.apply {
+            setText(System.currentTimeMillis().toFormattedDate(DateUtil.DATE_FORMAT))
+            setOnClickListener {
+                addViewModel.onDatePickerSelected()
+            }
         }
     }
-    
+
+    private fun showDatePicker(selectedDate: Long) {
+        MaterialDatePicker.Builder.datePicker()
+            .setSelection(selectedDate)
+            .build().apply {
+                addOnPositiveButtonClickListener { selection ->
+                    addViewModel.onDateSelected(selection)
+                }
+            }
+            .show(supportFragmentManager, null)
+    }
+
     private fun setupTimePicker() {
         val times = Time::class.sealedSubclasses.map { kClass -> kClass.java.readableName }
 
         val adapter = ArrayAdapter(
-                this,
-                R.layout.dropdown_menu_popup_item,
-                times
+            this,
+            R.layout.dropdown_menu_popup_item,
+            times
         )
 
-        textLayoutTime.setOnFocusChangeListener { _, hasFocus ->
+        binding.textlayoutTime.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
-                textLayoutTime.editText?.requestFocus()
+                binding.textlayoutTimeExact.editText?.requestFocus()
             }
         }
 
-        (textLayoutTime.editText as AutoCompleteTextView).apply {
+        (binding.textlayoutTime.editText as AutoCompleteTextView).apply {
             setAdapter(adapter)
             setOnItemClickListener { _, _, position, _ ->
                 addViewModel.onTimeSelected(Time::class.sealedSubclasses[position])
@@ -148,7 +143,7 @@ class AddActivity : AppCompatActivity() {
     }
 
     private fun setupExactTimePicker() {
-        textLayoutExactTime.editText?.setOnClickListener {
+        binding.textlayoutTimeExact.editText?.setOnClickListener {
             val calendar = Calendar.getInstance()
             TimePickerDialog(this, { _, hourOfDay, minute ->
                 val newDate = Calendar.getInstance().apply {
@@ -164,18 +159,18 @@ class AddActivity : AppCompatActivity() {
         val times = Content.values().map { it.readableName }
 
         val adapter = ArrayAdapter(
-                this,
-                R.layout.dropdown_menu_popup_item,
-                times
+            this,
+            R.layout.dropdown_menu_popup_item,
+            times
         )
 
-        textLayoutContent.setOnFocusChangeListener { _, hasFocus ->
+        binding.textlayoutContent.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
-                textLayoutContent.editText?.requestFocus()
+                binding.textlayoutContent.editText?.requestFocus()
             }
         }
 
-        (textLayoutContent.editText as AutoCompleteTextView).apply {
+        (binding.textlayoutContent.editText as AutoCompleteTextView).apply {
             setAdapter(adapter)
             setOnItemClickListener { _, _, position, _ ->
                 addViewModel.onContentSelected(Content.values()[position])
@@ -187,8 +182,7 @@ class AddActivity : AppCompatActivity() {
     }
 
     private fun hideLoading() {
-        progressDialog?.hide()
-        progressDialog = null
+        binding.layoutProgress.visibility = View.GONE
     }
 
     companion object {

@@ -13,8 +13,10 @@ class Weight : Serializable {
 
     constructor()
 
-    constructor(date: Long,
-                weight: Float) : this() {
+    constructor(
+        date: Long,
+        weight: Float
+    ) : this() {
         this.date = date
         this.weight = weight
     }
@@ -22,5 +24,4 @@ class Weight : Serializable {
     override fun toString(): String {
         return "Weight(date=$date, weight=$weight)"
     }
-
 }

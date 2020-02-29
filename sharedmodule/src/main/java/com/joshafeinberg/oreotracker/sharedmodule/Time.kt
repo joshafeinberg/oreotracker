@@ -9,13 +9,20 @@ import java.io.Serializable
 
 @Subclass
 sealed class Time : Serializable {
-    @Subclass object Overnight : Time()
-    @Subclass object BetweenMeals : Time()
-    @Subclass object AfterDinner : Time()
-    @Subclass class ExactTime() : Time() {
+    @Subclass
+    object Overnight : Time()
+
+    @Subclass
+    object BetweenMeals : Time()
+
+    @Subclass
+    object AfterDinner : Time()
+
+    @Subclass
+    class ExactTime() : Time() {
         var exactTime: Long = 0L
 
-        constructor(exactTime: Long): this() {
+        constructor(exactTime: Long) : this() {
             this.exactTime = exactTime
         }
 
@@ -23,7 +30,6 @@ sealed class Time : Serializable {
             return "ExactTime(exactTime=$exactTime)"
         }
     }
-
 
     class TimeAdapter : TypeAdapter<Time>() {
         override fun write(writer: JsonWriter, value: Time?) {
@@ -68,6 +74,5 @@ sealed class Time : Serializable {
             reader.endObject()
             return result!!
         }
-
     }
 }
