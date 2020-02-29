@@ -1,5 +1,6 @@
 package com.joshafeinberg.oreotracker.server
 
+import com.bnorm.ktor.retrofit.retrofitService
 import com.googlecode.objectify.Objectify
 import com.googlecode.objectify.ObjectifyService
 import com.joshafeinberg.oreotracker.server.di.bindSingleton
