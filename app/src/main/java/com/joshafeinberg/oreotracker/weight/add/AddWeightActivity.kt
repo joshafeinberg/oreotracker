@@ -18,7 +18,7 @@ import com.joshafeinberg.oreotracker.util.DateUtil
 import com.joshafeinberg.oreotracker.util.toFormattedDate
 import com.joshafeinberg.oreotracker.util.viewBinding
 
-class AddWeightActivity : AppCompatActivity(R.layout.activity_add_weight) {
+class AddWeightActivity : AppCompatActivity() {
 
     private val addWeightViewModel: AddWeightViewModel by viewModels()
     private val binding by viewBinding(ActivityAddWeightBinding::inflate)
