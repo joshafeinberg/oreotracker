@@ -10,13 +10,13 @@ import androidx.compose.foundation.Image
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.*
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.*
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.joshafeinberg.oreotracker.add.AddEvents
@@ -45,18 +45,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            var screen by remember { mutableStateOf(Screens.HOME) }
-            var selectedIndex by remember { mutableStateOf(0) }
             var isLoading by remember { mutableStateOf(false) }
-
-            /*AmbientBackPressedDispatcher = staticCompositionLocalOf { this }
-            backButtonHandler {
-                when (screen) {
-                    Screens.ADD_WEIGHT,
-                    Screens.ADD_SICKNESS -> screen = Screens.HOME
-                    else -> finish()
-                }
-            }*/
 
             addViewModel.events.observe(this) { event ->
                 when (event) {
@@ -64,7 +53,7 @@ class MainActivity : AppCompatActivity() {
                     is AddEvents.ThrowUpSaved -> {
                         isLoading = false
                         homeViewModel.addItem(event.throwUp)
-                        screen = Screens.HOME
+                        //screen = Screens.HOME
                     }
                 }
             }
@@ -75,24 +64,27 @@ class MainActivity : AppCompatActivity() {
                     is AddWeightEvents.WeightSaved -> {
                         isLoading = false
                         weightViewModel.addWeight(event.weight)
-                        screen = Screens.HOME
+                        //screen = Screens.HOME
                     }
                 }
             }
 
+            val navController = rememberNavController()
+
             MdcTheme {
-                when (screen) {
-                    Screens.HOME -> HomeScreen(
-                            selectedIndex = selectedIndex,
-                            onPageChange = { selectedIndex = it },
-                            onFabClicked = { selectedIndex ->
-                                when (selectedIndex) {
-                                    0 -> screen = Screens.ADD_SICKNESS
-                                    2 -> screen = Screens.ADD_WEIGHT
-                                }
+                NavHost(navController = navController, startDestination = Screen.Home.route) {
+                    composable(Screen.Home.route) {
+                        HomeScreen { selectedRoute ->
+                            val newRoute = when (selectedRoute) {
+                                BottomNavScreen.Home.route -> Screen.AddSickness.route
+                                BottomNavScreen.Weight.route -> Screen.AddWeight.route
+                                else -> return@HomeScreen
                             }
-                    )
-                    Screens.ADD_SICKNESS -> AddSicknessPage(
+                            navController.navigate(newRoute)
+                        }
+                    }
+                    composable(Screen.AddSickness.route) {
+                        AddSicknessPage(
                             stateLiveData = addViewModel.state,
                             isLoading = isLoading,
                             onDatePickerSelected = { selectedDate ->
@@ -104,10 +96,12 @@ class MainActivity : AppCompatActivity() {
                                 addViewModel.onSaveClicked()
                             },
                             onExitClicked = {
-                                screen = Screens.HOME
+                                navController.popBackStack()
                             }
-                    )
-                    Screens.ADD_WEIGHT -> AddWeightPage(
+                        )
+                    }
+                    composable(Screen.AddWeight.route) {
+                        AddWeightPage(
                             stateLiveData = addWeightViewModel.state,
                             isLoading = isLoading,
                             onDatePickerSelected = { selectedDate ->
@@ -119,39 +113,39 @@ class MainActivity : AppCompatActivity() {
                                 addWeightViewModel.onSaveClicked(dogWeight.myWeight, dogWeight.ourWeight)
                             },
                             onExitClicked = {
-                                screen = Screens.HOME
+                                navController.popBackStack()
                             }
-                    )
+                        )
+                    }
                 }
             }
         }
     }
 }
 
-enum class Screens {
-    HOME, ADD_SICKNESS, ADD_WEIGHT
-}
-
 @ExperimentalAnimationApi
 @Composable
 fun HomeScreen(
-        selectedIndex: Int,
-        onPageChange: (Int) -> Unit,
-        onFabClicked: (Int) -> Unit
+        onFabClicked: (String?) -> Unit
 ) {
+    val navController = rememberNavController()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.arguments?.getString(KEY_ROUTE)
+
     Scaffold(
-            bottomBar = { BottomNavigation(selectedIndex, onPageChange) },
+            bottomBar = { BottomNavigation(navController, currentRoute) },
             floatingActionButton = {
-                AnimatedVisibility(visible = selectedIndex != 1) {
+                AnimatedVisibility(visible = currentRoute != BottomNavScreen.Statistics.route) {
                     AddItemFab {
-                        onFabClicked(selectedIndex)
+                        onFabClicked(currentRoute)
                     }
                 }
             }) { innerPadding ->
-        when (selectedIndex) {
-            0 -> SicknessScreen(innerPadding)
-            1 -> StatisticsScreen(innerPadding)
-            2 -> WeightScreen(innerPadding)
+
+        NavHost(navController, startDestination = BottomNavScreen.Home.route) {
+            composable(BottomNavScreen.Home.route) { SicknessScreen(innerPadding) }
+            composable(BottomNavScreen.Statistics.route) { StatisticsScreen(innerPadding) }
+            composable(BottomNavScreen.Weight.route) { WeightScreen(innerPadding) }
         }
     }
 }
@@ -164,28 +158,26 @@ fun AddItemFab(onFabClicked: () -> Unit) {
 }
 
 @Composable
-fun BottomNavigation(selectedIndex: Int, onItemSelected: (Int) -> Unit) {
-    val listItems = listOf(
-            stringResource(id = R.string.home) to Icons.Filled.Home,
-            stringResource(id = R.string.statistics) to painterResource(id = R.drawable.ic_equalizer_black_24dp),
-            stringResource(id = R.string.weight) to painterResource(id = R.drawable.ic_pets_black_24dp)
-    )
-
-
+fun BottomNavigation(navController: NavHostController, currentRoute: String?) {
     BottomNavigation {
-        listItems.forEachIndexed { index, label ->
+        bottomNavScreens.forEach { screen ->
+            val screenName = stringResource(id = screen.resourceId)
             BottomNavigationItem(
                     icon = {
-                        when (val icon = label.second) {
-                            is ImageVector -> Icon(imageVector = icon, contentDescription = label.first)
-                            is Painter -> Icon(painter = icon, contentDescription = label.first)
+                        when (val icon = screen.image) {
+                            is ImageVector -> Icon(imageVector = icon, contentDescription = screenName)
+                            is Int -> Icon(painter = painterResource(id = icon), contentDescription = screenName)
                         }
                     },
-                    label = { Text(text = label.first) },
-                    selected = selectedIndex == index,
+                    label = { Text(text = screenName) },
+                    selected = currentRoute == screen.route,
                     onClick = {
-                        onItemSelected(index)
-                    })
+                        navController.navigate(screen.route) {
+                            popUpTo = navController.graph.startDestination
+                            launchSingleTop = true
+                        }
+                    }
+            )
         }
     }
 }

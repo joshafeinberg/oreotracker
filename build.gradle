@@ -48,6 +48,7 @@ buildscript {
                 'tooling': "androidx.compose.ui:ui-tooling:${versions.compose}",
                 'layout': "androidx.compose.foundation:foundation-layout:${versions.compose}",
                 'material': "androidx.compose.material:material:${versions.compose}",
+                'navigation': "androidx.navigation:navigation-compose:1.0.0-alpha08",
                 'themeAdapter': "com.google.android.material:compose-theme-adapter:${versions.compose}",
                 //'savedInstanceState': "androidx.compose.runtime:runtime-saved-instance-state:${versions.compose}",
                 'uiTest': "androidx.ui:ui-test:${versions.compose}",
